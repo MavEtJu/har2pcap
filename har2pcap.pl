@@ -1,4 +1,11 @@
-#!/usr/bin/perl -w -I.
+#!/usr/bin/perl -w -I .
+
+#
+# Copyright (c) 2018, Edwin Groothuis
+# All rights reserved.
+#
+# See LICENSE.txt for further details
+#
 
 use strict;
 use warnings;
@@ -9,7 +16,7 @@ use Data::Dumper;
 
 use JSON::PP;
 
-use Network;
+use HAR2Pcap::Network;
 
 my $dump_file = "out.pcap";
 my $har_file = "archive.har";

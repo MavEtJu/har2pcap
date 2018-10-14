@@ -1,5 +1,12 @@
 #!/usr/bin/perl -w
 
+#
+# Copyright (c) 2018, Edwin Groothuis
+# All rights reserved.
+#
+# See LICENSE.txt for further details
+#
+
 package IPv4;
 
 use strict;

@@ -1,14 +1,21 @@
 package Network;
 
+#
+# Copyright (c) 2018, Edwin Groothuis
+# All rights reserved.
+#
+# See LICENSE.txt for further details
+#
+
 use strict;
 use warnings;
 use Data::Dumper;
 
 use Net::Pcap;
 
-use Ethernet;
-use IPvX;
-use TCP;
+use HAR2Pcap::Ethernet;
+use HAR2Pcap::IPvX;
+use HAR2Pcap::TCP;
 
 sub new {
     my ($class, %args) = @_;

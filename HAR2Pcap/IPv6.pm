@@ -1,5 +1,12 @@
 package IPv6;
 
+#
+# Copyright (c) 2018, Edwin Groothuis
+# All rights reserved.
+#
+# See LICENSE.txt for further details
+#
+
 use strict;
 use warnings FATAL => 'all';
 use Data::Dumper;

@@ -1,11 +1,18 @@
 package IPvX;
 
+#
+# Copyright (c) 2018, Edwin Groothuis
+# All rights reserved.
+#
+# See LICENSE.txt for further details
+#
+
 use strict;
 use warnings;
 use Data::Dumper;
 
-use IPv4;
-use IPv6;
+use HAR2Pcap::IPv4;
+use HAR2Pcap::IPv6;
 
 sub new {
     my ($class, %args) = @_;
