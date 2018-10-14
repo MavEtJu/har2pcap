@@ -30,8 +30,24 @@ GetOptions(
     "fakeip4=s"	=> \$fake_ip4,
     "firstport=s"	=> \$first_port,
     )
+or usage();
 
-or die("Error in command line arguments\n");
+sub usage {
+    print <<EOF;
+
+Usage: $0 [options]
+	--har <input file>			default: $har_file
+	--dump <output file>			default: $dump_file
+	--srcmac <source MAC address>		default: $src_mac
+	--dstmac <destination MAC address>	default: $dst_mac
+	--srcip4 <source IPv4 address>		default: $src_ip4
+	--srcip6 <source IPv6 address>		default: $src_ip6
+	--fakeip4 <destination IPv4 address>	default: $fake_ip4
+	--firstport <first TCP port>		default: $first_port
+
+EOF
+    die("Usage");
+}
 
 
 # Init PCAP
@@ -40,7 +56,7 @@ my $dumper = pcap_dump_open($pcap, $dump_file);
 my $srcport = $first_port;
 
 # For every entry...
-open(FIN, $har_file);
+open(FIN, $har_file) or die "Cannot open $har_file for reading";
 my @lines = <FIN>;
 close(FIN);
 my $perl_scalar = decode_json(join("", @lines));
