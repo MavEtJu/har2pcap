@@ -12,6 +12,7 @@ use Net::Pcap;
 
 # Usage
 
+```
 Usage: ./har2pcap.pl [options]
         --har <input file>                      default: archive.har
 	--dump <output file>                    default: out.pcap
@@ -21,6 +22,7 @@ Usage: ./har2pcap.pl [options]
 	--srcip6 <source IPv6 address>          default: 2001:db8:1::1
 	--fakeip4 <destination IPv4 address>    default: 198.51.100.2
 	--firstport <first TCP port>            default: 1024
+```
 
 # Output
 
@@ -28,3 +30,19 @@ One ```.``` will be printed for every entry in the HAR file written.
 
 If no serverIPAddress can be found, it will default use the value
 defined with the --fakeip4 option.
+
+# Logic
+
+* Every entry in the HAR file will get a new TCP session.
+* Every packet will take 50 microseconds.
+* Every packet with data will be immediately acknowledged.
+
+* Every IPv4 and TCP header is 20 bytes, no options.
+* Every IPv4 TTL and IPv6 Hop Limit is 25.
+
+* Every IP packet has the same identifier.
+
+# Bugs etc
+
+Send me the HAR file with a description of what goes wrong and what is expected, then I'll check things out.
+
