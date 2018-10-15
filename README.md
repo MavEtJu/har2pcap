@@ -23,6 +23,8 @@ Usage: ./har2pcap.pl [options]
 	--dstmac <destination MAC address>      default: 02:00:00:aa:bb:cc
 	--srcip4 <source IPv4 address>          default: 192.0.2.1
 	--srcip6 <source IPv6 address>          default: 2001:db8:1::1
+	--dstip4 <destination IPv4 address>     default: (undef)
+	--dstip6 <destination IPv6 address>     default: (undef)
 	--fakeip4 <destination IPv4 address>    default: 198.51.100.2
 	--firstport <first TCP port>            default: 1024
 ```
@@ -33,6 +35,8 @@ One ```.``` will be printed for every entry in the HAR file written.
 
 If no serverIPAddress can be found, it will default use the value
 defined with the --fakeip4 option.
+
+Unless --dstip is set, it will take the serverIPAddress as the destination.
 
 # Logic
 

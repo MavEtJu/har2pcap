@@ -27,6 +27,8 @@ my $src_ip4 = "192.0.2.1";
 my $src_ip6 = "2001:db8:1::1";
 my $fake_ip4 = "198.51.100.2";
 my $first_port = 1024;
+my $dst_ip4 = undef;
+my $dst_ip6 = undef;
 
 GetOptions(
     "dump=s"	=> \$dump_file,
@@ -35,6 +37,8 @@ GetOptions(
     "dstmac=s"	=> \$dst_mac,
     "srcip4=s"	=> \$src_ip4,
     "srcip6=s"	=> \$src_ip6,
+    "dstip4=s"	=> \$dst_ip4,
+    "dstip6=s"	=> \$dst_ip6,
     "fakeip4=s"	=> \$fake_ip4,
     "firstport=s"	=> \$first_port,
     )
@@ -50,6 +54,8 @@ Usage: $0 [options]
 	--dstmac <destination MAC address>	default: $dst_mac
 	--srcip4 <source IPv4 address>		default: $src_ip4
 	--srcip6 <source IPv6 address>		default: $src_ip6
+	--dstip4 <destination IPv4 address>	default: (undef)
+	--dstip6 <destination IPv6 address>	default: (undef)
 	--fakeip4 <destination IPv4 address>	default: $fake_ip4
 	--firstport <first TCP port>		default: $first_port
 
@@ -124,9 +130,9 @@ foreach my $entrycount (0..$#entries) {
 		    srcmac => $src_mac,
 		    dstmac => $dst_mac,
 		    srcip4 => $src_ip4,
-		    dstip4 => $destip4,
+		    dstip4 => defined $destip4 ? (defined $dst_ip4 ? $dst_ip4 : $destip4) : undef,
 		    srcip6 => $src_ip6,
-		    dstip6 => $destip6,
+		    dstip6 => defined $destip6 ? (defined $dst_ip6 ? $dst_ip6 : $destip6) : undef,
 		    srcport => $srcport++,
 		    dstport => 80,
 		    );
