@@ -121,7 +121,6 @@ sub payload {
 	    $di[ 8], $di[ 9], $di[10], $di[11],
 	    $di[12], $di[13], $di[14], $di[15],
 	    20 + length($self->{payload}), 0, 0, $self->{ip}->{ip}->{nextheader});
-	    print length($tcp_pseudo), " + ", length($pseudo_payload), "\n";
 
 	$checksum = $self->checksum($tcp_pseudo . $pseudo_payload);
     }
