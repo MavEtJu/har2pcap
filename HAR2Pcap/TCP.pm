@@ -125,7 +125,7 @@ sub payload {
 	$checksum = $self->checksum($tcp_pseudo . $pseudo_payload);
     }
 
-    my $payload = pack("nn NN CCn vn",
+    my $payload = pack("nn NN CCn nn",
 	$self->{sourceport}, $self->{destport},
 	$self->{seqnr}, $self->{acknr},
 	5 << 4 + 0, $flags, 1000,
@@ -136,13 +136,14 @@ sub payload {
 sub checksum {
     my ($self, $msg) = @_;
 
+    $msg = $msg . "\0" if (length($msg) % 2 == 1);
+
     my $len_msg = length($msg);
     my $num_short = $len_msg / 2;
     my $chk = 0;
-    foreach my $short (unpack("S$num_short", $msg)) {
+    foreach my $short (unpack("n$num_short", $msg)) {
 	$chk += $short;
     }
-    $chk += unpack("C", substr($msg, $len_msg - 1, 1)) if ($len_msg % 2 != 0);
     $chk = ($chk >> 16) + ($chk & 0xffff);
     return (~(($chk >> 16) + $chk) & 0xffff);
 }
