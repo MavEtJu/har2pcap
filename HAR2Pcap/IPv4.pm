@@ -72,7 +72,32 @@ sub payload {
 	$si[0], $si[1], $si[2], $si[3],
 	$di[0], $di[1], $di[2], $di[3],
 	);
+
+    my $checksum = $self->checksum($payload);
+
+    $payload = pack("CCn nn CCn CCCC CCCC",
+	($self->{version} << 4) | 5, 0, 20 + length($self->{payload}),
+	$self->{identification}, 0,
+	$self->{ttl}, $self->{protocol}, $checksum,
+	$si[0], $si[1], $si[2], $si[3],
+	$di[0], $di[1], $di[2], $di[3],
+	);
     return $payload . $self->{payload};
+}
+
+sub checksum {
+    my ($self, $msg) = @_;
+
+    $msg = $msg . "\0" if (length($msg) % 2 == 1);
+
+    my $len_msg = length($msg);
+    my $num_short = $len_msg / 2;
+    my $chk = 0;
+    foreach my $short (unpack("n$num_short", $msg)) {
+	$chk += $short;
+    }
+    $chk = ($chk >> 16) + ($chk & 0xffff);
+    return (~(($chk >> 16) + $chk) & 0xffff);
 }
 
 1;
