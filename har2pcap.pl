@@ -9,6 +9,7 @@
 
 use strict;
 use warnings;
+use bytes;
 
 use Getopt::Long;
 use Net::Pcap;

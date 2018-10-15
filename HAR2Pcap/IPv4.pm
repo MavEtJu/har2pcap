@@ -11,6 +11,8 @@ package IPv4;
 
 use strict;
 use warnings;
+use bytes;
+
 use Data::Dumper;
 
 sub new {

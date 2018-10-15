@@ -11,6 +11,8 @@ package TCP;
 
 use strict;
 use warnings;
+use bytes;
+
 use Data::Dumper;
 
 sub new {

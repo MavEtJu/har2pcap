@@ -9,8 +9,9 @@ package Network;
 
 use strict;
 use warnings;
-use Data::Dumper;
+use bytes;
 
+use Data::Dumper;
 use Net::Pcap;
 
 use HAR2Pcap::Ethernet;

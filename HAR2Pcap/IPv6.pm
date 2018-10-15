@@ -8,7 +8,9 @@ package IPv6;
 #
 
 use strict;
-use warnings FATAL => 'all';
+use warnings;
+use bytes;
+
 use Data::Dumper;
 
 sub new {

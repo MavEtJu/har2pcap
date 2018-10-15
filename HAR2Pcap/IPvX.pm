@@ -9,6 +9,8 @@ package IPvX;
 
 use strict;
 use warnings;
+use bytes;
+
 use Data::Dumper;
 
 use HAR2Pcap::IPv4;
