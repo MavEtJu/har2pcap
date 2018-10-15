@@ -96,20 +96,37 @@ sub payload {
     my $di = $self->{ip}->{ip}->{destip};
     my @di = @{$di};
 
-    my $tcp_pseudo = pack("CCCC CCCC CC n",
-	$si[0], $si[1], $si[2], $si[3],
-	$di[0], $di[1], $di[2], $di[3],
-	0, 6, 20 + length($self->{payload}));
-
-    my $payload = pack("nn NN CCn nn",
+    my $checksum = 0;
+    my $pseudo_payload = pack("nn NN CCn nn",
 	$self->{sourceport}, $self->{destport},
 	$self->{seqnr}, $self->{acknr},
 	5 << 4 + 0, $flags, 1000,
 	0, $flags) . $self->{payload};
 
-    my $checksum = $self->checksum($tcp_pseudo . $payload);
+    if ($self->{ip}->{type} == 4) {
+	my $tcp_pseudo = pack("CCCC CCCC CC n",
+	    $si[0], $si[1], $si[2], $si[3],
+	    $di[0], $di[1], $di[2], $di[3],
+	    0, 6, 20 + length($self->{payload}));
+	$checksum = $self->checksum($tcp_pseudo . $pseudo_payload);
+    }
+    if ($self->{ip}->{type} == 6) {
+	my $tcp_pseudo = pack("CCCCCCCCCCCCCCCC CCCCCCCCCCCCCCCC N SC C",
+	    $si[ 0], $si[ 1], $si[ 2], $si[ 3],
+	    $si[ 4], $si[ 5], $si[ 6], $si[ 7],
+	    $si[ 8], $si[ 9], $si[10], $si[11],
+	    $si[12], $si[13], $si[14], $si[15],
+	    $di[ 0], $di[ 1], $di[ 2], $di[ 3],
+	    $di[ 4], $di[ 5], $di[ 6], $di[ 7],
+	    $di[ 8], $di[ 9], $di[10], $di[11],
+	    $di[12], $di[13], $di[14], $di[15],
+	    20 + length($self->{payload}), 0, 0, $self->{ip}->{ip}->{nextheader});
+	    print length($tcp_pseudo), " + ", length($pseudo_payload), "\n";
 
-    $payload = pack("nn NN CCn vn",
+	$checksum = $self->checksum($tcp_pseudo . $pseudo_payload);
+    }
+
+    my $payload = pack("nn NN CCn vn",
 	$self->{sourceport}, $self->{destport},
 	$self->{seqnr}, $self->{acknr},
 	5 << 4 + 0, $flags, 1000,
