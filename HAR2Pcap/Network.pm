@@ -82,7 +82,7 @@ sub handshake {
     my %header;
 
     # SYN
-    $tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport});
+    $tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport}, ip => $self->{ip_cs});
     $tcp->seq($self->{cs_seq});
     $tcp->ack(0);
     $tcp->flag_syn();
@@ -97,7 +97,7 @@ sub handshake {
     $self->{cs_seq}++;
 
     # SYN/ACK
-    $tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport});
+    $tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport}, ip => $self->{ip_cs});
     $tcp->seq($self->{sc_seq});
     $tcp->ack($self->{cs_seq});
     $tcp->flag_syn();
@@ -113,7 +113,7 @@ sub handshake {
     $self->{sc_seq}++;
 
     # ACK
-    $tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport});
+    $tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport}, ip => $self->{ip_cs});
     $tcp->seq($self->{cs_seq});
     $tcp->ack($self->{sc_seq});
     $tcp->flag_ack();
@@ -133,7 +133,7 @@ sub fin {
     my %header;
 
     # FIN S->C
-    $tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport});
+    $tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport}, ip => $self->{ip_sc});
     $tcp->seq($self->{sc_seq});
     $tcp->ack($self->{cs_seq});
     $tcp->flag_fin();
@@ -147,7 +147,7 @@ sub fin {
     pcap_dump($self->{dumper}, \%header, $self->{ethernet_sc}->payload());
 
     # FIN C->S
-    $tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport});
+    $tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport}, ip => $self->{ip_cs});
     $tcp->seq($self->{cs_seq});
     $tcp->ack($self->{sc_seq});
     $tcp->flag_fin();
@@ -176,7 +176,7 @@ sub client_to_server {
 	}
 
 	# Payload C->S
-	$tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport});
+	$tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport}, ip => $self->{ip_cs});
 	$tcp->seq($self->{cs_seq});
 	$tcp->ack($self->{sc_seq});
 	$tcp->flag_ack();
@@ -191,7 +191,7 @@ sub client_to_server {
 	$self->{cs_seq} += length($payload);
 
 	# ACK S->C
-	$tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport});
+	$tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport}, ip => $self->{ip_sc});
 	$tcp->seq($self->{sc_seq});
 	$tcp->ack($self->{cs_seq});
 	$tcp->flag_ack();
@@ -226,7 +226,7 @@ sub server_to_client {
 	}
 
 	# Payload S->C
-	$tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport});
+	$tcp = new TCP(sourceport=>$self->{dstport}, destport=>$self->{srcport}, ip => $self->{ip_sc});
 	$tcp->seq($self->{sc_seq});
 	$tcp->ack($self->{cs_seq});
 	$tcp->flag_ack();
@@ -241,7 +241,7 @@ sub server_to_client {
 	$self->{sc_seq} += length($payload);
 
 	# ACK C->S
-	$tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport});
+	$tcp = new TCP(sourceport=>$self->{srcport}, destport=>$self->{dstport}, ip => $self->{ip_cs});
 	$tcp->seq($self->{cs_seq});
 	$tcp->ack($self->{sc_seq});
 	$tcp->flag_ack();
